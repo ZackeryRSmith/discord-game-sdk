@@ -23,6 +23,7 @@ extern "C" {
 #define DISCORD_STORAGE_MANAGER_VERSION 1
 #define DISCORD_STORE_MANAGER_VERSION 1
 #define DISCORD_VOICE_MANAGER_VERSION 1
+#define DISCORD_ACHIEVEMENT_MANAGER_VERSION 1
 
 enum EDiscordResult {
     DiscordResult_Ok,
@@ -183,6 +184,7 @@ typedef char DiscordMetadataValue[4096];
 typedef uint64_t DiscordNetworkPeerId;
 typedef uint8_t DiscordNetworkChannelId;
 typedef char DiscordPath[4096];
+typedef char DiscordDateTime[64];
 
 struct DiscordUser {
     DiscordUserId id;
@@ -297,6 +299,13 @@ struct DiscordSku {
 struct DiscordInputMode {
     enum EDiscordInputModeType type;
     char shortcut[256];
+};
+
+struct DiscordUserAchievement {
+    DiscordSnowflake user_id;
+    DiscordSnowflake achievement_id;
+    uint8_t percent_complete;
+    DiscordDateTime unlocked_at;
 };
 
 struct IDiscordLobbyTransaction {
@@ -505,6 +514,18 @@ struct IDiscordVoiceManager {
     enum EDiscordResult (*set_local_volume)(struct IDiscordVoiceManager* manager, DiscordSnowflake user_id, uint8_t volume);
 };
 
+struct IDiscordAchievementEvents {
+    void (*on_user_achievement_update)(void* event_data, struct DiscordUserAchievement* user_achievement);
+};
+
+struct IDiscordAchievementManager {
+    void (*set_user_achievement)(struct IDiscordAchievementManager* manager, DiscordSnowflake achievement_id, int64_t percent_complete, void* callback_data, void (*callback)(void* callback_data, enum EDiscordResult result));
+    void (*fetch_user_achievements)(struct IDiscordAchievementManager* manager, void* callback_data, void (*callback)(void* callback_data, enum EDiscordResult result));
+    void (*count_user_achievements)(struct IDiscordAchievementManager* manager, int32_t* count);
+    enum EDiscordResult (*get_user_achievement)(struct IDiscordAchievementManager* manager, DiscordSnowflake user_achievement_id, struct DiscordUserAchievement* user_achievement);
+    enum EDiscordResult (*get_user_achievement_at)(struct IDiscordAchievementManager* manager, int32_t index, struct DiscordUserAchievement* user_achievement);
+};
+
 typedef void* IDiscordCoreEvents;
 
 struct IDiscordCore {
@@ -522,6 +543,7 @@ struct IDiscordCore {
     struct IDiscordStorageManager* (*get_storage_manager)(struct IDiscordCore* core);
     struct IDiscordStoreManager* (*get_store_manager)(struct IDiscordCore* core);
     struct IDiscordVoiceManager* (*get_voice_manager)(struct IDiscordCore* core);
+    struct IDiscordAchievementManager* (*get_achievement_manager)(struct IDiscordCore* core);
 };
 
 struct DiscordCreateParams {
@@ -551,6 +573,8 @@ struct DiscordCreateParams {
     DiscordVersion store_version;
     struct IDiscordVoiceEvents* voice_events;
     DiscordVersion voice_version;
+    struct IDiscordAchievementEvents* achievement_events;
+    DiscordVersion achievement_version;
 };
 
 #ifdef __cplusplus
@@ -572,6 +596,7 @@ void DiscordCreateParamsSetDefault(struct DiscordCreateParams* params)
     params->storage_version = DISCORD_STORAGE_MANAGER_VERSION;
     params->store_version = DISCORD_STORE_MANAGER_VERSION;
     params->voice_version = DISCORD_VOICE_MANAGER_VERSION;
+    params->achievement_version = DISCORD_ACHIEVEMENT_MANAGER_VERSION;
 }
 
 enum EDiscordResult DiscordCreate(DiscordVersion version, struct DiscordCreateParams* params, struct IDiscordCore** result);

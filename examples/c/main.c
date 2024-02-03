@@ -14,6 +14,7 @@
 struct Application {
     struct IDiscordCore* core;
     struct IDiscordUserManager* users;
+    struct IDiscordAchievementManager* achievements;
     struct IDiscordActivityManager* activities;
     struct IDiscordRelationshipManager* relationships;
     struct IDiscordApplicationManager* application;
@@ -124,6 +125,7 @@ int main(int argc, char** argv)
     DISCORD_REQUIRE(DiscordCreate(DISCORD_VERSION, &params, &app.core));
 
     app.users = app.core->get_user_manager(app.core);
+    app.achievements = app.core->get_achievement_manager(app.core);
     app.activities = app.core->get_activity_manager(app.core);
     app.application = app.core->get_application_manager(app.core);
     app.lobbies = app.core->get_lobby_manager(app.core);

@@ -164,6 +164,7 @@ using MetadataValue = char const*;
 using NetworkPeerId = std::uint64_t;
 using NetworkChannelId = std::uint8_t;
 using Path = char const*;
+using DateTime = char const*;
 
 class User final {
 public:
@@ -411,6 +412,21 @@ public:
 
 private:
     DiscordInputMode internal_;
+};
+
+class UserAchievement final {
+public:
+    void SetUserId(Snowflake userId);
+    Snowflake GetUserId() const;
+    void SetAchievementId(Snowflake achievementId);
+    Snowflake GetAchievementId() const;
+    void SetPercentComplete(std::uint8_t percentComplete);
+    std::uint8_t GetPercentComplete() const;
+    void SetUnlockedAt(DateTime unlockedAt);
+    DateTime GetUnlockedAt() const;
+
+private:
+    DiscordUserAchievement internal_;
 };
 
 class LobbyTransaction final {

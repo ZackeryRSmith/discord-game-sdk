@@ -383,6 +383,19 @@ namespace Discord
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    public partial struct UserAchievement
+    {
+        public Int64 UserId;
+
+        public Int64 AchievementId;
+
+        public byte PercentComplete;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+        public string UnlockedAt;
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public partial struct LobbyTransaction
     {
         [StructLayout(LayoutKind.Sequential)]
@@ -740,6 +753,9 @@ namespace Discord
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate IntPtr GetVoiceManagerMethod(IntPtr discordPtr);
 
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+            internal delegate IntPtr GetAchievementManagerMethod(IntPtr discordPtr);
+
             internal DestroyHandler Destroy;
 
             internal RunCallbacksMethod RunCallbacks;
@@ -767,6 +783,8 @@ namespace Discord
             internal GetStoreManagerMethod GetStoreManager;
 
             internal GetVoiceManagerMethod GetVoiceManager;
+
+            internal GetAchievementManagerMethod GetAchievementManager;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -823,6 +841,10 @@ namespace Discord
             internal IntPtr VoiceEvents;
 
             internal UInt32 VoiceVersion;
+
+            internal IntPtr AchievementEvents;
+
+            internal UInt32 AchievementVersion;
         }
 
         [DllImport(Constants.DllName, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
@@ -900,6 +922,12 @@ namespace Discord
 
         private VoiceManager VoiceManagerInstance;
 
+        private IntPtr AchievementEventsPtr;
+
+        private AchievementManager.FFIEvents AchievementEvents;
+
+        private AchievementManager AchievementManagerInstance;
+
         private IntPtr MethodsPtr;
 
         private Nullable<FFIMethods> MethodsStructure;
@@ -972,6 +1000,10 @@ namespace Discord
             VoiceEventsPtr = Marshal.AllocHGlobal(Marshal.SizeOf(VoiceEvents));
             createParams.VoiceEvents = VoiceEventsPtr;
             createParams.VoiceVersion = 1;
+            AchievementEvents = new AchievementManager.FFIEvents();
+            AchievementEventsPtr = Marshal.AllocHGlobal(Marshal.SizeOf(AchievementEvents));
+            createParams.AchievementEvents = AchievementEventsPtr;
+            createParams.AchievementVersion = 1;
             InitEvents(EventsPtr, ref Events);
             var result = DiscordCreate(2, ref createParams, out MethodsPtr);
             if (result != Result.Ok)
@@ -1004,6 +1036,7 @@ namespace Discord
             Marshal.FreeHGlobal(StorageEventsPtr);
             Marshal.FreeHGlobal(StoreEventsPtr);
             Marshal.FreeHGlobal(VoiceEventsPtr);
+            Marshal.FreeHGlobal(AchievementEventsPtr);
         }
 
         public void RunCallbacks()
@@ -1154,6 +1187,18 @@ namespace Discord
                 );
             }
             return VoiceManagerInstance;
+        }
+
+        public AchievementManager GetAchievementManager()
+        {
+            if (AchievementManagerInstance == null) {
+                AchievementManagerInstance = new AchievementManager(
+                  Methods.GetAchievementManager(MethodsPtr),
+                  AchievementEventsPtr,
+                  ref AchievementEvents
+                );
+            }
+            return AchievementManagerInstance;
         }
     }
 
@@ -3674,6 +3719,151 @@ namespace Discord
             {
                 throw new ResultException(res);
             }
+        }
+    }
+
+    public partial class AchievementManager
+    {
+        [StructLayout(LayoutKind.Sequential)]
+        internal partial struct FFIEvents
+        {
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+            internal delegate void UserAchievementUpdateHandler(IntPtr ptr, ref UserAchievement userAchievement);
+
+            internal UserAchievementUpdateHandler OnUserAchievementUpdate;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal partial struct FFIMethods
+        {
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+            internal delegate void SetUserAchievementCallback(IntPtr ptr, Result result);
+
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+            internal delegate void SetUserAchievementMethod(IntPtr methodsPtr, Int64 achievementId, Int64 percentComplete, IntPtr callbackData, SetUserAchievementCallback callback);
+
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+            internal delegate void FetchUserAchievementsCallback(IntPtr ptr, Result result);
+
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+            internal delegate void FetchUserAchievementsMethod(IntPtr methodsPtr, IntPtr callbackData, FetchUserAchievementsCallback callback);
+
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+            internal delegate void CountUserAchievementsMethod(IntPtr methodsPtr, ref Int32 count);
+
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+            internal delegate Result GetUserAchievementMethod(IntPtr methodsPtr, Int64 userAchievementId, ref UserAchievement userAchievement);
+
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+            internal delegate Result GetUserAchievementAtMethod(IntPtr methodsPtr, Int32 index, ref UserAchievement userAchievement);
+
+            internal SetUserAchievementMethod SetUserAchievement;
+
+            internal FetchUserAchievementsMethod FetchUserAchievements;
+
+            internal CountUserAchievementsMethod CountUserAchievements;
+
+            internal GetUserAchievementMethod GetUserAchievement;
+
+            internal GetUserAchievementAtMethod GetUserAchievementAt;
+        }
+
+        public delegate void SetUserAchievementHandler(Result result);
+
+        public delegate void FetchUserAchievementsHandler(Result result);
+
+        public delegate void UserAchievementUpdateHandler(ref UserAchievement userAchievement);
+
+        private IntPtr MethodsPtr;
+
+        private Nullable<FFIMethods> MethodsStructure;
+
+        private FFIMethods Methods
+        {
+            get
+            {
+                if (!MethodsStructure.HasValue)
+                {
+                    MethodsStructure = (Nullable<FFIMethods>)Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
+                }
+                return MethodsStructure.Value;
+            }
+
+        }
+
+        public event UserAchievementUpdateHandler OnUserAchievementUpdate;
+
+        internal AchievementManager(IntPtr ptr, IntPtr eventsPtr, ref FFIEvents events)
+        {
+            if (eventsPtr == IntPtr.Zero) {
+                throw new ResultException(Result.InternalError);
+            }
+            InitEvents(eventsPtr, ref events);
+            MethodsPtr = ptr;
+            if (MethodsPtr == IntPtr.Zero) {
+                throw new ResultException(Result.InternalError);
+            }
+        }
+
+        private void InitEvents(IntPtr eventsPtr, ref FFIEvents events)
+        {
+            events.OnUserAchievementUpdate = (IntPtr ptr, ref UserAchievement userAchievement) =>
+            {
+                if (OnUserAchievementUpdate != null)
+                {
+                    OnUserAchievementUpdate.Invoke(ref userAchievement);
+                }
+            };
+            Marshal.StructureToPtr(events, eventsPtr, false);
+        }
+
+        public void SetUserAchievement(Int64 achievementId, Int64 percentComplete, SetUserAchievementHandler callback)
+        {
+            FFIMethods.SetUserAchievementCallback wrapped = (IntPtr ptr, Result result) =>
+            {
+                Utility.Release(ptr);
+                callback(result);
+            };
+            Methods.SetUserAchievement(MethodsPtr, achievementId, percentComplete, Utility.Retain(wrapped), wrapped);
+        }
+
+        public void FetchUserAchievements(FetchUserAchievementsHandler callback)
+        {
+            FFIMethods.FetchUserAchievementsCallback wrapped = (IntPtr ptr, Result result) =>
+            {
+                Utility.Release(ptr);
+                callback(result);
+            };
+            Methods.FetchUserAchievements(MethodsPtr, Utility.Retain(wrapped), wrapped);
+        }
+
+        public Int32 CountUserAchievements()
+        {
+            var ret = new Int32();
+            Methods.CountUserAchievements(MethodsPtr, ref ret);
+            return ret;
+        }
+
+        public UserAchievement GetUserAchievement(Int64 userAchievementId)
+        {
+            var ret = new UserAchievement();
+            var res = Methods.GetUserAchievement(MethodsPtr, userAchievementId, ref ret);
+            if (res != Result.Ok)
+            {
+                throw new ResultException(res);
+            }
+            return ret;
+        }
+
+        public UserAchievement GetUserAchievementAt(Int32 index)
+        {
+            var ret = new UserAchievement();
+            var res = Methods.GetUserAchievementAt(MethodsPtr, index, ref ret);
+            if (res != Result.Ok)
+            {
+                throw new ResultException(res);
+            }
+            return ret;
         }
     }
 }

@@ -30,6 +30,7 @@ Result Core::Create(ClientId clientId, std::uint64_t flags, Core** instance)
     params.overlay_events = &OverlayManager::events_;
     params.store_events = &StoreManager::events_;
     params.voice_events = &VoiceManager::events_;
+    params.achievement_events = &AchievementManager::events_;
     auto result = DiscordCreate(DISCORD_VERSION, &params, &((*instance)->internal_));
     if (result != DiscordResult_Ok || !(*instance)->internal_) {
         delete (*instance);
@@ -167,6 +168,15 @@ discord::VoiceManager& Core::VoiceManager()
     }
 
     return voiceManager_;
+}
+
+discord::AchievementManager& Core::AchievementManager()
+{
+    if (!achievementManager_.internal_) {
+        achievementManager_.internal_ = internal_->get_achievement_manager(internal_);
+    }
+
+    return achievementManager_;
 }
 
 } // namespace discord

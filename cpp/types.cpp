@@ -640,6 +640,47 @@ char const* InputMode::GetShortcut() const
     return internal_.shortcut;
 }
 
+void UserAchievement::SetUserId(Snowflake userId)
+{
+    internal_.user_id = userId;
+}
+
+Snowflake UserAchievement::GetUserId() const
+{
+    return internal_.user_id;
+}
+
+void UserAchievement::SetAchievementId(Snowflake achievementId)
+{
+    internal_.achievement_id = achievementId;
+}
+
+Snowflake UserAchievement::GetAchievementId() const
+{
+    return internal_.achievement_id;
+}
+
+void UserAchievement::SetPercentComplete(std::uint8_t percentComplete)
+{
+    internal_.percent_complete = percentComplete;
+}
+
+std::uint8_t UserAchievement::GetPercentComplete() const
+{
+    return internal_.percent_complete;
+}
+
+void UserAchievement::SetUnlockedAt(DateTime unlockedAt)
+{
+    strncpy(internal_.unlocked_at, unlockedAt, 64);
+    internal_.unlocked_at[64 - 1] = '\0';
+}
+
+DateTime UserAchievement::GetUnlockedAt() const
+{
+    return internal_.unlocked_at;
+}
+
 Result LobbyTransaction::SetType(LobbyType type)
 {
     auto result = internal_->set_type(internal_, static_cast<EDiscordLobbyType>(type));
