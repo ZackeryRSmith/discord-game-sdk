@@ -2004,13 +2004,13 @@ namespace Discord
         internal partial struct FFIMethods
         {
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetLobbyCreateTransactionMethod(IntPtr methodsPtr, ref LobbyTransaction transaction);
+            internal delegate Result GetLobbyCreateTransactionMethod(IntPtr methodsPtr, ref IntPtr transaction);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetLobbyUpdateTransactionMethod(IntPtr methodsPtr, Int64 lobbyId, ref LobbyTransaction transaction);
+            internal delegate Result GetLobbyUpdateTransactionMethod(IntPtr methodsPtr, Int64 lobbyId, ref IntPtr transaction);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetMemberUpdateTransactionMethod(IntPtr methodsPtr, Int64 lobbyId, Int64 userId, ref LobbyMemberTransaction transaction);
+            internal delegate Result GetMemberUpdateTransactionMethod(IntPtr methodsPtr, Int64 lobbyId, Int64 userId, ref IntPtr transaction);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void CreateLobbyCallback(IntPtr ptr, Result result, ref Lobby lobby);
@@ -2094,7 +2094,7 @@ namespace Discord
             internal delegate void SendLobbyMessageMethod(IntPtr methodsPtr, Int64 lobbyId, byte[] data, Int32 dataLen, IntPtr callbackData, SendLobbyMessageCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetSearchQueryMethod(IntPtr methodsPtr, ref LobbySearchQuery query);
+            internal delegate Result GetSearchQueryMethod(IntPtr methodsPtr, ref IntPtr query);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void SearchCallback(IntPtr ptr, Result result);
@@ -2353,7 +2353,7 @@ namespace Discord
         public LobbyTransaction GetLobbyCreateTransaction()
         {
             var ret = new LobbyTransaction();
-            var res = Methods.GetLobbyCreateTransaction(MethodsPtr, ref ret);
+            var res = Methods.GetLobbyCreateTransaction(MethodsPtr, ref ret.MethodsPtr);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2364,7 +2364,7 @@ namespace Discord
         public LobbyTransaction GetLobbyUpdateTransaction(Int64 lobbyId)
         {
             var ret = new LobbyTransaction();
-            var res = Methods.GetLobbyUpdateTransaction(MethodsPtr, lobbyId, ref ret);
+            var res = Methods.GetLobbyUpdateTransaction(MethodsPtr, lobbyId, ref ret.MethodsPtr);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2375,7 +2375,7 @@ namespace Discord
         public LobbyMemberTransaction GetMemberUpdateTransaction(Int64 lobbyId, Int64 userId)
         {
             var ret = new LobbyMemberTransaction();
-            var res = Methods.GetMemberUpdateTransaction(MethodsPtr, lobbyId, userId, ref ret);
+            var res = Methods.GetMemberUpdateTransaction(MethodsPtr, lobbyId, userId, ref ret.MethodsPtr);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2590,7 +2590,7 @@ namespace Discord
         public LobbySearchQuery GetSearchQuery()
         {
             var ret = new LobbySearchQuery();
-            var res = Methods.GetSearchQuery(MethodsPtr, ref ret);
+            var res = Methods.GetSearchQuery(MethodsPtr, ref ret.MethodsPtr);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
