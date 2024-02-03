@@ -434,17 +434,17 @@ namespace Discord
 
         internal IntPtr MethodsPtr;
 
-        internal Nullable<FFIMethods> MethodsStructure;
+        internal Object MethodsStructure;
 
         private FFIMethods Methods
         {
             get
             {
-                if (!MethodsStructure.HasValue)
+                if (MethodsStructure == null)
                 {
-                    MethodsStructure = (Nullable<FFIMethods>)Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
+                    MethodsStructure = Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
                 }
-                return MethodsStructure.Value;
+                return (FFIMethods)MethodsStructure;
             }
 
         }
@@ -541,17 +541,17 @@ namespace Discord
 
         internal IntPtr MethodsPtr;
 
-        internal Nullable<FFIMethods> MethodsStructure;
+        internal Object MethodsStructure;
 
         private FFIMethods Methods
         {
             get
             {
-                if (!MethodsStructure.HasValue)
+                if (MethodsStructure == null)
                 {
-                    MethodsStructure = (Nullable<FFIMethods>)Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
+                    MethodsStructure = Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
                 }
-                return MethodsStructure.Value;
+                return (FFIMethods)MethodsStructure;
             }
 
         }
@@ -610,17 +610,17 @@ namespace Discord
 
         internal IntPtr MethodsPtr;
 
-        internal Nullable<FFIMethods> MethodsStructure;
+        internal Object MethodsStructure;
 
         private FFIMethods Methods
         {
             get
             {
-                if (!MethodsStructure.HasValue)
+                if (MethodsStructure == null)
                 {
-                    MethodsStructure = (Nullable<FFIMethods>)Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
+                    MethodsStructure = Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
                 }
-                return MethodsStructure.Value;
+                return (FFIMethods)MethodsStructure;
             }
 
         }
@@ -930,17 +930,17 @@ namespace Discord
 
         private IntPtr MethodsPtr;
 
-        private Nullable<FFIMethods> MethodsStructure;
+        private Object MethodsStructure;
 
         private FFIMethods Methods
         {
             get
             {
-                if (!MethodsStructure.HasValue)
+                if (MethodsStructure == null)
                 {
-                    MethodsStructure = (Nullable<FFIMethods>)Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
+                    MethodsStructure = Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
                 }
-                return MethodsStructure.Value;
+                return (FFIMethods)MethodsStructure;
             }
 
         }
@@ -1256,17 +1256,17 @@ namespace Discord
 
         private IntPtr MethodsPtr;
 
-        private Nullable<FFIMethods> MethodsStructure;
+        private Object MethodsStructure;
 
         private FFIMethods Methods
         {
             get
             {
-                if (!MethodsStructure.HasValue)
+                if (MethodsStructure == null)
                 {
-                    MethodsStructure = (Nullable<FFIMethods>)Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
+                    MethodsStructure = Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
                 }
-                return MethodsStructure.Value;
+                return (FFIMethods)MethodsStructure;
             }
 
         }
@@ -1377,17 +1377,17 @@ namespace Discord
 
         private IntPtr MethodsPtr;
 
-        private Nullable<FFIMethods> MethodsStructure;
+        private Object MethodsStructure;
 
         private FFIMethods Methods
         {
             get
             {
-                if (!MethodsStructure.HasValue)
+                if (MethodsStructure == null)
                 {
-                    MethodsStructure = (Nullable<FFIMethods>)Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
+                    MethodsStructure = Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
                 }
-                return MethodsStructure.Value;
+                return (FFIMethods)MethodsStructure;
             }
 
         }
@@ -1496,17 +1496,17 @@ namespace Discord
 
         private IntPtr MethodsPtr;
 
-        private Nullable<FFIMethods> MethodsStructure;
+        private Object MethodsStructure;
 
         private FFIMethods Methods
         {
             get
             {
-                if (!MethodsStructure.HasValue)
+                if (MethodsStructure == null)
                 {
-                    MethodsStructure = (Nullable<FFIMethods>)Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
+                    MethodsStructure = Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
                 }
-                return MethodsStructure.Value;
+                return (FFIMethods)MethodsStructure;
             }
 
         }
@@ -1659,17 +1659,17 @@ namespace Discord
 
         private IntPtr MethodsPtr;
 
-        private Nullable<FFIMethods> MethodsStructure;
+        private Object MethodsStructure;
 
         private FFIMethods Methods
         {
             get
             {
-                if (!MethodsStructure.HasValue)
+                if (MethodsStructure == null)
                 {
-                    MethodsStructure = (Nullable<FFIMethods>)Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
+                    MethodsStructure = Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
                 }
-                return MethodsStructure.Value;
+                return (FFIMethods)MethodsStructure;
             }
 
         }
@@ -1847,17 +1847,17 @@ namespace Discord
 
         private IntPtr MethodsPtr;
 
-        private Nullable<FFIMethods> MethodsStructure;
+        private Object MethodsStructure;
 
         private FFIMethods Methods
         {
             get
             {
-                if (!MethodsStructure.HasValue)
+                if (MethodsStructure == null)
                 {
-                    MethodsStructure = (Nullable<FFIMethods>)Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
+                    MethodsStructure = Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
                 }
-                return MethodsStructure.Value;
+                return (FFIMethods)MethodsStructure;
             }
 
         }
@@ -2228,17 +2228,17 @@ namespace Discord
 
         private IntPtr MethodsPtr;
 
-        private Nullable<FFIMethods> MethodsStructure;
+        private Object MethodsStructure;
 
         private FFIMethods Methods
         {
             get
             {
-                if (!MethodsStructure.HasValue)
+                if (MethodsStructure == null)
                 {
-                    MethodsStructure = (Nullable<FFIMethods>)Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
+                    MethodsStructure = Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
                 }
-                return MethodsStructure.Value;
+                return (FFIMethods)MethodsStructure;
             }
 
         }
@@ -2745,17 +2745,17 @@ namespace Discord
 
         private IntPtr MethodsPtr;
 
-        private Nullable<FFIMethods> MethodsStructure;
+        private Object MethodsStructure;
 
         private FFIMethods Methods
         {
             get
             {
-                if (!MethodsStructure.HasValue)
+                if (MethodsStructure == null)
                 {
-                    MethodsStructure = (Nullable<FFIMethods>)Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
+                    MethodsStructure = Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
                 }
-                return MethodsStructure.Value;
+                return (FFIMethods)MethodsStructure;
             }
 
         }
@@ -2797,6 +2797,9 @@ namespace Discord
             Marshal.StructureToPtr(events, eventsPtr, false);
         }
 
+        /// <summary>
+        /// Get the local peer ID for this process.
+        /// </summary>
         public UInt64 GetPeerId()
         {
             var ret = new UInt64();
@@ -2804,6 +2807,9 @@ namespace Discord
             return ret;
         }
 
+        /// <summary>
+        /// Send pending network messages.
+        /// </summary>
         public void Flush()
         {
             var res = Methods.Flush(MethodsPtr);
@@ -2813,6 +2819,9 @@ namespace Discord
             }
         }
 
+        /// <summary>
+        /// Open a connection to a remote peer.
+        /// </summary>
         public void OpenPeer(UInt64 peerId, string routeData)
         {
             var res = Methods.OpenPeer(MethodsPtr, peerId, routeData);
@@ -2822,6 +2831,9 @@ namespace Discord
             }
         }
 
+        /// <summary>
+        /// Update the route data for a connected peer.
+        /// </summary>
         public void UpdatePeer(UInt64 peerId, string routeData)
         {
             var res = Methods.UpdatePeer(MethodsPtr, peerId, routeData);
@@ -2831,6 +2843,9 @@ namespace Discord
             }
         }
 
+        /// <summary>
+        /// Close the connection to a remote peer.
+        /// </summary>
         public void ClosePeer(UInt64 peerId)
         {
             var res = Methods.ClosePeer(MethodsPtr, peerId);
@@ -2840,6 +2855,9 @@ namespace Discord
             }
         }
 
+        /// <summary>
+        /// Open a message channel to a connected peer.
+        /// </summary>
         public void OpenChannel(UInt64 peerId, byte channelId, bool reliable)
         {
             var res = Methods.OpenChannel(MethodsPtr, peerId, channelId, reliable);
@@ -2849,6 +2867,9 @@ namespace Discord
             }
         }
 
+        /// <summary>
+        /// Close a message channel to a connected peer.
+        /// </summary>
         public void CloseChannel(UInt64 peerId, byte channelId)
         {
             var res = Methods.CloseChannel(MethodsPtr, peerId, channelId);
@@ -2858,6 +2879,9 @@ namespace Discord
             }
         }
 
+        /// <summary>
+        /// Send a message to a connected peer over an opened message channel.
+        /// </summary>
         public void SendMessage(UInt64 peerId, byte channelId, byte[] data)
         {
             var res = Methods.SendMessage(MethodsPtr, peerId, channelId, data, data.Length);
@@ -2937,17 +2961,17 @@ namespace Discord
 
         private IntPtr MethodsPtr;
 
-        private Nullable<FFIMethods> MethodsStructure;
+        private Object MethodsStructure;
 
         private FFIMethods Methods
         {
             get
             {
-                if (!MethodsStructure.HasValue)
+                if (MethodsStructure == null)
                 {
-                    MethodsStructure = (Nullable<FFIMethods>)Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
+                    MethodsStructure = Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
                 }
-                return MethodsStructure.Value;
+                return (FFIMethods)MethodsStructure;
             }
 
         }
@@ -3117,17 +3141,17 @@ namespace Discord
 
         private IntPtr MethodsPtr;
 
-        private Nullable<FFIMethods> MethodsStructure;
+        private Object MethodsStructure;
 
         private FFIMethods Methods
         {
             get
             {
-                if (!MethodsStructure.HasValue)
+                if (MethodsStructure == null)
                 {
-                    MethodsStructure = (Nullable<FFIMethods>)Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
+                    MethodsStructure = Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
                 }
-                return MethodsStructure.Value;
+                return (FFIMethods)MethodsStructure;
             }
 
         }
@@ -3355,17 +3379,17 @@ namespace Discord
 
         private IntPtr MethodsPtr;
 
-        private Nullable<FFIMethods> MethodsStructure;
+        private Object MethodsStructure;
 
         private FFIMethods Methods
         {
             get
             {
-                if (!MethodsStructure.HasValue)
+                if (MethodsStructure == null)
                 {
-                    MethodsStructure = (Nullable<FFIMethods>)Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
+                    MethodsStructure = Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
                 }
-                return MethodsStructure.Value;
+                return (FFIMethods)MethodsStructure;
             }
 
         }
@@ -3579,17 +3603,17 @@ namespace Discord
 
         private IntPtr MethodsPtr;
 
-        private Nullable<FFIMethods> MethodsStructure;
+        private Object MethodsStructure;
 
         private FFIMethods Methods
         {
             get
             {
-                if (!MethodsStructure.HasValue)
+                if (MethodsStructure == null)
                 {
-                    MethodsStructure = (Nullable<FFIMethods>)Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
+                    MethodsStructure = Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
                 }
-                return MethodsStructure.Value;
+                return (FFIMethods)MethodsStructure;
             }
 
         }
@@ -3776,17 +3800,17 @@ namespace Discord
 
         private IntPtr MethodsPtr;
 
-        private Nullable<FFIMethods> MethodsStructure;
+        private Object MethodsStructure;
 
         private FFIMethods Methods
         {
             get
             {
-                if (!MethodsStructure.HasValue)
+                if (MethodsStructure == null)
                 {
-                    MethodsStructure = (Nullable<FFIMethods>)Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
+                    MethodsStructure = Marshal.PtrToStructure(MethodsPtr, typeof(FFIMethods));
                 }
-                return MethodsStructure.Value;
+                return (FFIMethods)MethodsStructure;
             }
 
         }

@@ -440,13 +440,37 @@ struct IDiscordNetworkEvents {
 };
 
 struct IDiscordNetworkManager {
+    /**
+     * Get the local peer ID for this process.
+     */
     void (*get_peer_id)(struct IDiscordNetworkManager* manager, DiscordNetworkPeerId* peer_id);
+    /**
+     * Send pending network messages.
+     */
     enum EDiscordResult (*flush)(struct IDiscordNetworkManager* manager);
+    /**
+     * Open a connection to a remote peer.
+     */
     enum EDiscordResult (*open_peer)(struct IDiscordNetworkManager* manager, DiscordNetworkPeerId peer_id, const char* route_data);
+    /**
+     * Update the route data for a connected peer.
+     */
     enum EDiscordResult (*update_peer)(struct IDiscordNetworkManager* manager, DiscordNetworkPeerId peer_id, const char* route_data);
+    /**
+     * Close the connection to a remote peer.
+     */
     enum EDiscordResult (*close_peer)(struct IDiscordNetworkManager* manager, DiscordNetworkPeerId peer_id);
+    /**
+     * Open a message channel to a connected peer.
+     */
     enum EDiscordResult (*open_channel)(struct IDiscordNetworkManager* manager, DiscordNetworkPeerId peer_id, DiscordNetworkChannelId channel_id, bool reliable);
+    /**
+     * Close a message channel to a connected peer.
+     */
     enum EDiscordResult (*close_channel)(struct IDiscordNetworkManager* manager, DiscordNetworkPeerId peer_id, DiscordNetworkChannelId channel_id);
+    /**
+     * Send a message to a connected peer over an opened message channel.
+     */
     enum EDiscordResult (*send_message)(struct IDiscordNetworkManager* manager, DiscordNetworkPeerId peer_id, DiscordNetworkChannelId channel_id, uint8_t* data, uint32_t data_length);
 };
 
