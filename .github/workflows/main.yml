@@ -1,0 +1,83 @@
+name: Update SDK
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 0 12 ? WED,SUN'
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  check_download_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Git identity
+        run: |
+          git config --global user.email "zackery.smith82307@gmail.com"
+          git config --global user.name "Github Actions"
+    
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Iterate Over Versions and Download
+        run: |
+          valid_url=false
+          CURRENT_VERSION=$(git rev-parse --abbrev-ref HEAD)
+          IFS='.' read -r CURRENT_MAJOR_VERSION CURRENT_MINOR_VERSION CURRENT_PATCH_VERSION <<<"${CURRENT_VERSION//v/}"
+          
+          NEXT_MAJOR_VERSION=$((CURRENT_MAJOR_VERSION + 1))
+          
+          function process_version() {
+              local major=$1
+              local minor=$2
+              local patch=$3
+              local version="${major}.${minor}.${patch}"
+              local url="https://dl-game-sdk.discordapp.net/${version}/discord_game_sdk.zip"
+          
+              echo "Checking $url"
+              if wget --spider "$url" 2>/dev/null; then
+                  echo "Checkout to new branch v$version"
+                  git checkout -b "v${version}"
+          
+                  echo "Downloading $url"
+                  wget "$url" -O discord_game_sdk.zip
+          
+                  echo "Extracting $url"
+                  unzip -o discord_game_sdk.zip -d .
+          
+                  echo "Commit and push extracted files"
+                  git add *
+                  git commit -m "Add SDK files for version ${version}"
+                  git push origin "v${version}"
+
+                  echo "Creating issue as a reminder"
+                  gh issue create --title "Switch Default Branch!" --body "Please remember to switch the default branch to the latest version of the SDK." --assignee "ZackeryRSmith"
+                  
+                  exit 0
+              fi
+          }
+
+          # process from the current version
+          for minor in $(seq "$CURRENT_MINOR_VERSION" 9); do
+              if [ "$minor" -eq "$CURRENT_MINOR_VERSION" ]; then
+                  start_patch=$((CURRENT_PATCH_VERSION + 1))
+              else
+                  start_patch=0
+              fi
+          
+              for patch in $(seq "$start_patch" 9); do
+                  process_version "$CURRENT_MAJOR_VERSION" "$minor" "$patch"
+              done
+          done
+          
+          # if no valid URL found for the current major version, try the next major version
+          for minor in {0..9}; do
+              for patch in {0..9}; do
+                  process_version "$NEXT_MAJOR_VERSION" "$minor" "$patch"
+              done
+          done
+
+          echo "NO SDK UPDATES FOUND!"
+          exit 1
