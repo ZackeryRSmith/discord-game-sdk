@@ -16,7 +16,7 @@ extern "C" {
 #include <stdbool.h>
 #endif
 
-#define DISCORD_VERSION 2
+#define DISCORD_VERSION 3
 #define DISCORD_APPLICATION_MANAGER_VERSION 1
 #define DISCORD_USER_MANAGER_VERSION 1
 #define DISCORD_IMAGE_MANAGER_VERSION 1
@@ -106,6 +106,11 @@ enum EDiscordPremiumType {
 
 enum EDiscordImageType {
     DiscordImageType_User,
+};
+
+enum EDiscordActivityPartyPrivacy {
+    DiscordActivityPartyPrivacy_Private = 0,
+    DiscordActivityPartyPrivacy_Public = 1,
 };
 
 enum EDiscordActivityType {
@@ -216,18 +221,18 @@ typedef char DiscordMetadataValue[4096];
 typedef uint64_t DiscordNetworkPeerId;
 typedef uint8_t DiscordNetworkChannelId;
 #ifdef __APPLE__
-typedef void IDXGISwapChain
+typedef void IDXGISwapChain;
 #endif
 #ifdef __linux__
-  typedef void IDXGISwapChain
+typedef void IDXGISwapChain;
 #endif
 #ifdef __APPLE__
-  typedef void MSG
+typedef void MSG;
 #endif
 #ifdef __linux__
-  typedef void MSG
+typedef void MSG;
 #endif
-  typedef char DiscordPath[4096];
+typedef char DiscordPath[4096];
 typedef char DiscordDateTime[64];
 
 struct DiscordUser {
@@ -275,6 +280,7 @@ struct DiscordPartySize {
 struct DiscordActivityParty {
     char id[128];
     struct DiscordPartySize size;
+    enum EDiscordActivityPartyPrivacy privacy;
 };
 
 struct DiscordActivitySecrets {

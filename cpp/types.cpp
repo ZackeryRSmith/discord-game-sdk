@@ -249,6 +249,16 @@ PartySize const& ActivityParty::GetSize() const
     return reinterpret_cast<PartySize const&>(internal_.size);
 }
 
+void ActivityParty::SetPrivacy(ActivityPartyPrivacy privacy)
+{
+    internal_.privacy = static_cast<EDiscordActivityPartyPrivacy>(privacy);
+}
+
+ActivityPartyPrivacy ActivityParty::GetPrivacy() const
+{
+    return static_cast<ActivityPartyPrivacy>(internal_.privacy);
+}
+
 void ActivitySecrets::SetMatch(char const* match)
 {
     strncpy(internal_.match, match, 128);

@@ -87,6 +87,11 @@ enum class ImageType {
     User,
 };
 
+enum class ActivityPartyPrivacy {
+    Private = 0,
+    Public = 1,
+};
+
 enum class ActivityType {
     Playing,
     Streaming,
@@ -306,6 +311,8 @@ public:
     char const* GetId() const;
     PartySize& GetSize();
     PartySize const& GetSize() const;
+    void SetPrivacy(ActivityPartyPrivacy privacy);
+    ActivityPartyPrivacy GetPrivacy() const;
 
 private:
     DiscordActivityParty internal_;

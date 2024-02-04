@@ -88,6 +88,12 @@ namespace Discord
         User,
     }
 
+    public enum ActivityPartyPrivacy
+    {
+        Private = 0,
+        Public = 1,
+    }
+
     public enum ActivityType
     {
         Playing,
@@ -282,6 +288,8 @@ namespace Discord
         public string Id;
 
         public PartySize Size;
+
+        public ActivityPartyPrivacy Privacy;
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
@@ -1049,7 +1057,7 @@ namespace Discord
             createParams.AchievementEvents = AchievementEventsPtr;
             createParams.AchievementVersion = 1;
             InitEvents(EventsPtr, ref Events);
-            var result = DiscordCreate(2, ref createParams, out MethodsPtr);
+            var result = DiscordCreate(3, ref createParams, out MethodsPtr);
             if (result != Result.Ok)
             {
                 Dispose();
@@ -3486,13 +3494,9 @@ namespace Discord
             Methods.SetImeSelectionBoundsCallback(MethodsPtr, GCHandle.ToIntPtr(wrapped), SetImeSelectionBoundsCallbackCallbackImpl);
         }
 
-        public void IsPointInsideClickZone(Int32 x, Int32 y)
+        public bool IsPointInsideClickZone(Int32 x, Int32 y)
         {
-            var res = Methods.IsPointInsideClickZone(MethodsPtr, x, y);
-            if (res != Result.Ok)
-            {
-                throw new ResultException(res);
-            }
+            return Methods.IsPointInsideClickZone(MethodsPtr, x, y);
         }
 
         [MonoPInvokeCallback]

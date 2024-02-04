@@ -222,7 +222,8 @@ void OverlayManager::SetImeSelectionBoundsCallback(
 
 bool OverlayManager::IsPointInsideClickZone(std::int32_t x, std::int32_t y)
 {
-    return internal_->is_point_inside_click_zone(internal_, x, y);
+    auto result = internal_->is_point_inside_click_zone(internal_, x, y);
+    return (result != 0);
 }
 
 } // namespace discord
