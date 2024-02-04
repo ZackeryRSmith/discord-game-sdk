@@ -53,7 +53,7 @@ jobs:
                   git push origin "v${version}"
 
                   echo "Creating issue as a reminder"
-                  gh issue create --title "Switch Default Branch!" --body "Please remember to switch the default branch to the latest version of the SDK." --assignee "ZackeryRSmith"
+                  gh issue create --title "Switch Default Branch!" --body "Please remember to switch the default branch to the latest version of the SDK (v${version})." --assignee "ZackeryRSmith"
                   
                   exit 0
               fi
