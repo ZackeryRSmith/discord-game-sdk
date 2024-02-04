@@ -101,7 +101,7 @@ int main(int, char**)
                   std::vector<uint8_t> data;
                   data.reserve(dims.GetWidth() * dims.GetHeight() * 4);
                   uint8_t* d = data.data();
-                  state.core->ImageManager().GetData(handle, d, data.size());
+                  state.core->ImageManager().GetData(handle, d, static_cast<uint32_t>(data.size()));
 
 #if defined(_WIN32)
                   auto fileSize =
@@ -226,7 +226,7 @@ int main(int, char**)
               state.core->LobbyManager().SendLobbyMessage(
                 lobby.GetId(),
                 reinterpret_cast<uint8_t*>(data.data()),
-                data.size(),
+                static_cast<uint32_t>(data.size()),
                 [](discord::Result result) {
                     std::cout << "Sent message. Result: " << static_cast<int>(result) << "\n";
                 });

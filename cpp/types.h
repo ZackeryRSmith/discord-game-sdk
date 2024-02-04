@@ -104,6 +104,12 @@ enum class ActivityActionType {
     Spectate,
 };
 
+enum class ActivitySupportedPlatformFlags {
+    Desktop = 1,
+    Android = 2,
+    iOS = 4,
+};
+
 enum class ActivityJoinRequestReply {
     No,
     Yes,
@@ -353,6 +359,8 @@ public:
     ActivitySecrets const& GetSecrets() const;
     void SetInstance(bool instance);
     bool GetInstance() const;
+    void SetSupportedPlatforms(std::uint32_t supportedPlatforms);
+    std::uint32_t GetSupportedPlatforms() const;
 
 private:
     DiscordActivity internal_;

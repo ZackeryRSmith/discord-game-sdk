@@ -395,6 +395,16 @@ bool Activity::GetInstance() const
     return internal_.instance != 0;
 }
 
+void Activity::SetSupportedPlatforms(std::uint32_t supportedPlatforms)
+{
+    internal_.supported_platforms = supportedPlatforms;
+}
+
+std::uint32_t Activity::GetSupportedPlatforms() const
+{
+    return internal_.supported_platforms;
+}
+
 void Presence::SetStatus(Status status)
 {
     internal_.status = static_cast<EDiscordStatus>(status);
