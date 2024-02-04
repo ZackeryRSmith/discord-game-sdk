@@ -193,7 +193,7 @@ void OverlayManager::SetImeCompositionRangeCallback(
         if (!cb || !(*cb)) {
             return;
         }
-        (*cb)(from, to, *reinterpret_cast<Rect const*>(&bounds), boundsLength);
+        (*cb)(from, to, reinterpret_cast<Rect*>(bounds), boundsLength);
     };
     std::unique_ptr<std::function<void(std::int32_t, std::int32_t, Rect*, std::uint32_t)>> cb{};
     cb.reset(new std::function<void(std::int32_t, std::int32_t, Rect*, std::uint32_t)>(
@@ -222,8 +222,7 @@ void OverlayManager::SetImeSelectionBoundsCallback(
 
 bool OverlayManager::IsPointInsideClickZone(std::int32_t x, std::int32_t y)
 {
-    auto result = internal_->is_point_inside_click_zone(internal_, x, y);
-    return static_cast<Result>(result);
+    return internal_->is_point_inside_click_zone(internal_, x, y);
 }
 
 } // namespace discord
